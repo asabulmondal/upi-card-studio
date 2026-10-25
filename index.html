@@ -2,7 +2,7 @@
 <html lang="en-IN">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>UPI Card Studio | Free UPI Payment Card and QR Code Maker</title>
 <meta name="description" content="Design a personal UPI payment card with your QR code, name and photo. Pick a layout, preview it live and download a PNG or PDF. Free, and your details stay in your browser.">
 <meta name="robots" content="index, follow, max-image-preview:large">
@@ -66,7 +66,6 @@
           <button id="removePhoto" class="btn ghost" type="button">Remove</button>
         </div>
         <p class="hint">Your details and photo stay in this browser. Nothing is uploaded or saved.</p></div>
-      <button class="btn next" type="button" data-goto="design">Next: choose a design</button>
     </div>
 
     <div class="pane" id="pane-design" role="tabpanel" aria-labelledby="tab-design" hidden>
@@ -78,12 +77,15 @@
       <div class="field"><span class="lbl">Layout</span><div class="layouts" id="layouts"></div></div>
       <div class="field"><span class="lbl">Colour</span><div class="colors" id="colors"></div></div>
       <div class="field"><span class="lbl">Name style</span><div class="fonts" id="fonts"></div></div>
-      <div class="field"><span class="lbl">Show on card</span><div id="toggles"></div></div>
-      <button class="btn ghost" type="button" data-goto="details">Back to details</button>
+      <details class="opts"><summary><span>Show on card</span><small id="optCount">All shown</small></summary><div id="toggles"></div></details>
+    </div>
+    <div class="actions">
+      <button id="backBtn" class="btn ghost" type="button" hidden>Back</button>
+      <button id="mainBtn" class="btn next" type="button">Next: choose a design</button>
     </div>
   </section>
 
-  <section class="preview" aria-label="Preview and export">
+  <section class="preview" aria-label="Card preview">
     <div class="stage" id="stage">
       <div class="fit" id="fit"><div class="scaler" id="scaler">
         <article id="paymentCard" class="card t-classic portrait" aria-label="Payment card preview">
@@ -107,22 +109,24 @@
       </div></div>
     </div>
 
-    <div class="export" id="exportPanel" hidden>
-      <h3>Download your card</h3>
-      <ul id="checks" class="checks" aria-label="What is needed before you can download"></ul>
-      <div id="verifyBox" class="verify off">
-        <label class="chk"><input id="verifyQr" type="checkbox" disabled><span><strong>Last step:</strong> scan the QR with a UPI app and check that the name matches.</span></label>
-      </div>
-      <div class="btns">
-        <button id="downloadPng" class="btn" type="button" disabled>Download PNG</button>
-        <button id="downloadPdf" class="btn" type="button" disabled>Download PDF</button>
-        <button id="shareCard" class="btn" type="button" hidden>Share</button>
-      </div>
-      <p id="exportStatus" class="hint" role="status">Complete the checklist above to enable downloads.</p>
-      <p class="hint">The PNG is saved at 4× resolution. Never put a PIN or OTP on a card.</p>
-    </div>
   </section>
 </main>
+<dialog id="dlDlg" aria-labelledby="dlTitle">
+  <div class="dl-body">
+    <div class="dl-head"><h3 id="dlTitle">Download your card</h3><button id="dlClose" class="x" type="button" aria-label="Close">×</button></div>
+    <ul id="checks" class="checks" aria-label="What is needed before you can download"></ul>
+    <div id="verifyBox" class="verify off">
+      <label class="chk"><input id="verifyQr" type="checkbox" disabled><span><strong>Last step:</strong> scan the QR with a UPI app and check that the name matches.</span></label>
+    </div>
+    <div class="btns">
+      <button id="downloadPng" class="btn" type="button" disabled>Download PNG</button>
+      <button id="downloadPdf" class="btn" type="button" disabled>Download PDF</button>
+      <button id="shareCard" class="btn" type="button" hidden>Share</button>
+    </div>
+    <p id="exportStatus" class="hint" role="status">Complete the checklist above to enable downloads.</p>
+    <p class="hint">The PNG is saved at 4× resolution. Never put a PIN or OTP on a card.</p>
+  </div>
+</dialog>
 <dialog id="cropDlg" aria-labelledby="cropTitle">
   <h3 id="cropTitle">Adjust photo</h3>
   <div class="crop-wrap"><canvas id="cropCv" width="300" height="300"></canvas></div>
@@ -132,20 +136,7 @@
   <div class="btns"><button id="cropCancel" class="btn" type="button">Cancel</button><button id="cropOk" class="btn primary" type="button">Use photo</button></div>
 </dialog>
 <div id="toast" class="toast" role="status" aria-live="polite"></div>
-<section class="about" aria-labelledby="about-title">
-  <h2 id="about-title">Free UPI payment card maker</h2>
-  <p>UPI Card Studio turns your UPI ID into a printable payment card with a scannable QR code. Add your name and photo, choose a layout and colour, then download a PNG or PDF to print on a PVC card or share.</p>
-  <ol>
-    <li>Enter your name and UPI ID. The QR appears as you type.</li>
-    <li>Pick a layout, colour and name style in the Design tab.</li>
-    <li>Scan the QR once to check it, then download your card.</li>
-  </ol>
-  <details><summary>Is it free, and is my data private?</summary><p>It is free. Your name, UPI ID and photo are used only in your browser to draw the card. They are not uploaded to a server.</p></details>
-  <details><summary>Will the QR work with my UPI app?</summary><p>The QR uses the standard UPI payment link format, which UPI apps read. A generated QR does not confirm that the UPI ID is active, so always scan-test it before printing.</p></details>
-  <details><summary>What size is the card?</summary><p>Exports use the ID-1 size of 85.6 × 54 mm, the same as a bank card. Check your printer's layout requirements before ordering.</p></details>
-  <details><summary>Can I add an amount to the QR?</summary><p>Yes. Enter an amount and the QR asks for that fixed amount. Leave it blank so the payer can type any amount.</p></details>
-</section>
-<footer>Independent design tool. Not affiliated with NPCI, banks or UPI apps.</footer>
+<footer><a href="about.html">About and FAQ</a><span aria-hidden="true"> · </span>Independent design tool. Not affiliated with NPCI, banks or UPI apps.</footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>

@@ -33,7 +33,7 @@
   function exportStatus(msg, isError = false) { const el = $("exportStatus"); el.textContent = msg; el.style.color = isError ? "#a12a2a" : ""; }
   let toastTimer;
   function toast(msg, isError = false) {
-    const el = $("toast"); el.textContent = msg; el.className = "toast show" + (isError ? " err" : "");
+    const el = $("toast"); (document.querySelector("dialog[open]") || document.body).appendChild(el); el.textContent = msg; el.className = "toast show" + (isError ? " err" : "");
     clearTimeout(toastTimer); toastTimer = setTimeout(() => (el.className = "toast"), 2800);
   }
   function validate() {
@@ -45,7 +45,7 @@
   }
   const canExport = () => !!state.payload && !!nameIn.value.trim();
   function syncExportButtons() { const ok = canExport() && $("verifyQr").checked; exportBtns.forEach((b) => (b.disabled = !ok)); }
-  function goFix(id) { showTab("details"); $(id).focus(); }
+  function goFix(id) { $("dlDlg").close(); showTab("details"); $(id).focus(); }
   function renderChecks() {
     const upi = upiIn.value.trim(), amt = amtIn.value.trim();
     const okUpi = /^[^@\s]+@[^@\s]+$/.test(upi), okAmt = !amt || (/^\d+(\.\d{1,2})?$/.test(amt) && Number(amt) > 0);
@@ -82,9 +82,10 @@
       $("tab-" + n).setAttribute("aria-selected", on);
       $("tab-" + n).tabIndex = on ? 0 : -1;
       $("pane-" + n).hidden = !on;
-      if (n === "design") $("exportPanel").hidden = !on;
       if (on && n === "design") renderThumbs();
     });
+    $("mainBtn").textContent = name === "design" ? "Download card" : "Next: choose a design";
+    $("backBtn").hidden = name !== "design";
   }
   ["details", "design"].forEach((n) => $("tab-" + n).addEventListener("click", () => showTab(n)));
   document.querySelector(".tabs").addEventListener("keydown", (e) => {
@@ -92,7 +93,6 @@
     const n = document.activeElement === $("tab-details") ? "design" : "details";
     showTab(n); $("tab-" + n).focus();
   });
-  document.querySelectorAll("[data-goto]").forEach((b) => b.addEventListener("click", () => showTab(b.dataset.goto)));
 
   /* ---------- UPI payload + QR ---------- */
   function buildPayload() {
@@ -272,7 +272,10 @@
     TOGGLES.forEach(([k, label]) => {
       const l = document.createElement("label"); l.className = "sw";
       l.innerHTML = `<span>${label}</span><input type="checkbox" role="switch" checked>`;
-      l.querySelector("input").addEventListener("change", (e) => { state.show[k] = e.target.checked; applyClasses(); });
+      l.querySelector("input").addEventListener("change", (e) => { state.show[k] = e.target.checked; applyClasses();
+        const off = Object.values(state.show).filter((v) => !v).length;
+        $("optCount").textContent = off ? `${off} hidden` : "All shown";
+      });
       $("toggles").appendChild(l);
     });
   }
@@ -289,7 +292,7 @@
   function fitCard() {
     const w = card.offsetWidth, h = card.offsetHeight;
     const avail = $("stage").clientWidth - 32;
-    const maxH = window.innerWidth <= 940 ? 300 : Infinity;
+    const maxH = window.innerWidth <= 940 ? 240 : Infinity;
     const s = Math.min(1, avail / w, maxH / h);
     $("scaler").style.transform = `scale(${s})`;
     $("fit").style.width = w * s + "px"; $("fit").style.height = h * s + "px";
@@ -362,6 +365,14 @@
   paintThemeBtn();
 
   [nameIn, upiIn, amtIn].forEach((i) => i.addEventListener("input", () => { $("verifyQr").checked = false; updateExportState(); }));
+
+  $("mainBtn").addEventListener("click", () => {
+    if ($("tab-design").classList.contains("active")) { updateExportState(); $("dlDlg").showModal(); }
+    else { showTab("design"); window.scrollTo({ top: 0 }); }
+  });
+  $("backBtn").addEventListener("click", () => { showTab("details"); window.scrollTo({ top: 0 }); });
+  $("dlClose").addEventListener("click", () => $("dlDlg").close());
+  $("dlDlg").addEventListener("click", (e) => { if (e.target === $("dlDlg")) $("dlDlg").close(); });
 
   /* ---------- Init ---------- */
   inputs.forEach((i) => i.addEventListener("input", () => { updateText(); validate(); generateQr(); }));
