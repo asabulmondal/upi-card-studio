@@ -297,7 +297,7 @@
     $("scaler").style.transform = `scale(${s})`;
     $("fit").style.width = w * s + "px"; $("fit").style.height = h * s + "px";
   }
-  window.addEventListener("resize", fitCard);
+  window.addEventListener("resize", debounce(fitCard, 150));
 
   /* ---------- Export ---------- */
   const toCanvas = (square = false) => {
