@@ -132,8 +132,7 @@ dialog{background:var(--surface)}
 .user,.qrb{display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center}
 .qr-frame{width:136px;height:136px;padding:6px;background:#fff;border-radius:10px;display:flex;align-items:center;justify-content:center;flex:none}
 .qr{width:124px;height:124px;display:flex;align-items:center;justify-content:center}
-.qr canvas{display:none!important}
-.qr img{display:block!important;width:124px!important;height:124px!important;margin:0!important}
+.qr canvas, .qr img { width: 124px !important; height: 124px !important; margin: 0 !important; }
 .qr-ph{font-size:12px;font-weight:700;color:#a2adbc;text-align:center;line-height:1.3}
 .upi{margin:0;font-size:11px;font-weight:700;overflow-wrap:anywhere;max-width:200px}
 
