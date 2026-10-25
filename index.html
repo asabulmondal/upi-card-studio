@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en-IN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UPI Card Studio | Free UPI Payment Card and QR Code Maker</title>
+<meta name="description" content="Design a personal UPI payment card with your QR code, name and photo. Pick a layout, preview it live and download a PNG or PDF. Free, and your details stay in your browser.">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="theme-color" content="#2d5be3" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0f141c" media="(prefers-color-scheme: dark)">
+<link rel="canonical" href="https://asabulmondal.github.io/usb-card-studio/">
+<link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="images/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="UPI Card Studio">
+<meta property="og:title" content="UPI Card Studio | Free UPI Payment Card and QR Code Maker">
+<meta property="og:description" content="Design a personal UPI payment card with your QR code, name and photo. Pick a layout, preview it live and download a PNG or PDF. Free, and your details stay in your browser.">
+<meta property="og:url" content="https://asabulmondal.github.io/usb-card-studio/">
+<meta property="og:image" content="https://asabulmondal.github.io/usb-card-studio/images/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="en_IN">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="UPI Card Studio | Free UPI Payment Card and QR Code Maker">
+<meta name="twitter:description" content="Design a personal UPI payment card with your QR code, name and photo. Pick a layout, preview it live and download a PNG or PDF. Free, and your details stay in your browser.">
+<meta name="twitter:image" content="https://asabulmondal.github.io/usb-card-studio/images/og-image.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"UPI Card Studio","url":"https://asabulmondal.github.io/usb-card-studio/","description":"Design a personal UPI payment card with your QR code, name and photo. Pick a layout, preview it live and download a PNG or PDF. Free, and your details stay in your browser.","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","browserRequirements":"Requires JavaScript","inLanguage":"en-IN","offers":{"@type":"Offer","price":"0","priceCurrency":"INR"}}</script>
+<script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<noscript><p style="padding:16px;text-align:center">UPI Card Studio needs JavaScript to design and export your card.</p></noscript>
+<header class="top">
+  <div class="brand">
+    <img class="logo" src="images/logo.svg" alt="" width="40" height="40">
+    <div><h1>UPI Card Studio</h1><p>Design a payment card you can print or share</p></div>
+  </div>
+  <nav class="tabs" role="tablist" aria-label="Card steps">
+    <button class="tab active" role="tab" id="tab-details" aria-selected="true" aria-controls="pane-details">User details<span class="tick" aria-hidden="true">✓</span></button>
+    <button class="tab" role="tab" id="tab-design" tabindex="-1" aria-selected="false" aria-controls="pane-design">Design</button>
+  </nav>
+  <button id="themeBtn" class="theme-btn" type="button"></button>
+</header>
+
+<main class="app">
+  <section class="panel" aria-label="Card settings">
+
+    <div class="pane" id="pane-details" role="tabpanel" aria-labelledby="tab-details">
+      <div class="field"><label for="personName">Name</label>
+        <input id="personName" maxlength="60" autocomplete="name" placeholder="Name shown on the card"></div>
+      <div class="field"><label for="upiId">UPI ID</label>
+        <input id="upiId" maxlength="100" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="name@bank">
+        <p id="qrStatus" class="status" role="status">Enter your UPI ID and the QR appears automatically.</p></div>
+      <div class="row">
+        <div class="field"><label for="qrAmount">Amount <span>optional</span></label>
+          <input id="qrAmount" inputmode="decimal" placeholder="Any amount"></div>
+        <div class="field"><label for="phone">Phone <span>optional</span></label>
+          <input id="phone" maxlength="25" inputmode="tel" placeholder="Printed on card"></div>
+      </div>
+      <div class="field"><label for="businessName">Business or tagline <span>optional</span></label>
+        <input id="businessName" maxlength="60" placeholder="e.g. Personal payments"></div>
+      <div class="field"><label for="photoInput">Photo <span>optional</span></label>
+        <div class="photo-row">
+          <input id="photoInput" type="file" accept="image/png,image/jpeg,image/webp">
+          <button id="removePhoto" class="btn ghost" type="button">Remove</button>
+        </div>
+        <p class="hint">Your details and photo stay in this browser. Nothing is uploaded or saved.</p></div>
+      <button class="btn next" type="button" data-goto="design">Next: choose a design</button>
+    </div>
+
+    <div class="pane" id="pane-design" role="tabpanel" aria-labelledby="tab-design" hidden>
+      <div class="field"><span class="lbl">Orientation</span>
+        <div class="seg" id="orient">
+          <button type="button" data-o="portrait" class="on" aria-pressed="true">Portrait</button>
+          <button type="button" data-o="landscape" aria-pressed="false">Landscape</button>
+        </div></div>
+      <div class="field"><span class="lbl">Layout</span><div class="layouts" id="layouts"></div></div>
+      <div class="field"><span class="lbl">Colour</span><div class="colors" id="colors"></div></div>
+      <div class="field"><span class="lbl">Name style</span><div class="fonts" id="fonts"></div></div>
+      <div class="field"><span class="lbl">Show on card</span><div id="toggles"></div></div>
+      <button class="btn ghost" type="button" data-goto="details">Back to details</button>
+    </div>
+  </section>
+
+  <section class="preview" aria-label="Preview and export">
+    <div class="stage" id="stage">
+      <div class="fit" id="fit"><div class="scaler" id="scaler">
+        <article id="paymentCard" class="card t-classic portrait" aria-label="Payment card preview">
+          <div class="bg"><i class="s1"></i><i class="s2"></i></div>
+          <div class="c-head">
+            <img id="upiLogo" class="upi-logo" alt="UPI" width="84" height="30">
+            <div class="scan">SCAN TO PAY</div>
+          </div>
+          <div class="c-main">
+            <div class="user">
+              <div class="photo"><span id="photoPlaceholder" aria-hidden="true">+</span><img id="personPhoto" alt="Profile photo" hidden></div>
+              <div class="utext"><h3 id="previewName">Your Name</h3><p id="previewSubtitle" class="sub"></p><p id="previewPhone" class="ph" hidden></p></div>
+            </div>
+            <div class="qrb">
+              <div class="qr-frame"><div id="generatedQr" class="qr" hidden></div><div id="qrPlaceholder" class="qr-ph">QR appears<br>here</div></div>
+              <p id="previewUpi" class="upi">Add your UPI ID</p>
+            </div>
+          </div>
+          <div class="c-foot">Scan with any UPI app</div>
+        </article>
+      </div></div>
+    </div>
+
+    <div class="export" id="exportPanel" hidden>
+      <h3>Download your card</h3>
+      <ul id="checks" class="checks" aria-label="What is needed before you can download"></ul>
+      <div id="verifyBox" class="verify off">
+        <label class="chk"><input id="verifyQr" type="checkbox" disabled><span><strong>Last step:</strong> scan the QR with a UPI app and check that the name matches.</span></label>
+      </div>
+      <div class="btns">
+        <button id="downloadPng" class="btn" type="button" disabled>Download PNG</button>
+        <button id="downloadPdf" class="btn" type="button" disabled>Download PDF</button>
+        <button id="shareCard" class="btn" type="button" hidden>Share</button>
+      </div>
+      <p id="exportStatus" class="hint" role="status">Complete the checklist above to enable downloads.</p>
+      <p class="hint">The PNG is saved at 4× resolution. Never put a PIN or OTP on a card.</p>
+    </div>
+  </section>
+</main>
+<dialog id="cropDlg" aria-labelledby="cropTitle">
+  <h3 id="cropTitle">Adjust photo</h3>
+  <div class="crop-wrap"><canvas id="cropCv" width="300" height="300"></canvas></div>
+  <label for="zoom">Zoom</label>
+  <input id="zoom" type="range" min="1" max="3" step="0.01" value="1">
+  <p class="hint">Drag to reposition. The circle is what appears on the card.</p>
+  <div class="btns"><button id="cropCancel" class="btn" type="button">Cancel</button><button id="cropOk" class="btn primary" type="button">Use photo</button></div>
+</dialog>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+<section class="about" aria-labelledby="about-title">
+  <h2 id="about-title">Free UPI payment card maker</h2>
+  <p>UPI Card Studio turns your UPI ID into a printable payment card with a scannable QR code. Add your name and photo, choose a layout and colour, then download a PNG or PDF to print on a PVC card or share.</p>
+  <ol>
+    <li>Enter your name and UPI ID. The QR appears as you type.</li>
+    <li>Pick a layout, colour and name style in the Design tab.</li>
+    <li>Scan the QR once to check it, then download your card.</li>
+  </ol>
+  <details><summary>Is it free, and is my data private?</summary><p>It is free. Your name, UPI ID and photo are used only in your browser to draw the card. They are not uploaded to a server.</p></details>
+  <details><summary>Will the QR work with my UPI app?</summary><p>The QR uses the standard UPI payment link format, which UPI apps read. A generated QR does not confirm that the UPI ID is active, so always scan-test it before printing.</p></details>
+  <details><summary>What size is the card?</summary><p>Exports use the ID-1 size of 85.6 × 54 mm, the same as a bank card. Check your printer's layout requirements before ordering.</p></details>
+  <details><summary>Can I add an amount to the QR?</summary><p>Yes. Enter an amount and the QR asks for that fixed amount. Leave it blank so the payer can type any amount.</p></details>
+</section>
+<footer>Independent design tool. Not affiliated with NPCI, banks or UPI apps.</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
